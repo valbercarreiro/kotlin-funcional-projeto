@@ -4,34 +4,61 @@ fun main() {
     testaTipoFuncaoReferencia()
     testaTipoFuncaoClasse()
 
-    val minhaFuncaoLambda: () -> Unit = {
-        println("executa como lambda")
-    }
-    println(minhaFuncaoLambda())
+    testaFuncaoLambda()
+    testaFuncaoAnonima()
 
-    val minhaFuncaoAnonima: () -> Unit = fun() {
-        println("executa como lambda")
-    }
-    println(minhaFuncaoAnonima())
+    testaFuncaoLambdaMaisDeUmRetorno()
+    testaFuncaoAnonimaMaisDeUmRetorno()
 }
 
-private fun testaTipoFuncaoClasse() {
-    val minhaFuncaoClasse: () -> Unit = Teste()
-    println(minhaFuncaoClasse())
+fun testaFuncaoAnonimaMaisDeUmRetorno() {
+    val calculaBonificacaoAnonima: (salario: Double) -> Double = fun(salario): Double {
+        if (salario > 1000.0) {
+            return salario + 50.0
+        }
+        return salario + 100.0
+    }
+    println(calculaBonificacaoAnonima)
+}
+
+fun testaFuncaoLambdaMaisDeUmRetorno() {
+    val calculaBonificacao: (salario: Double) -> Double = lambda@{ salario ->
+        if (salario > 1000.0) {
+            return@lambda salario + 50.0
+        }
+        salario + 100.0
+    }
+    println(calculaBonificacao(1100.0))
+}
+
+fun testaFuncaoAnonima() {
+    val minhaFuncaoAnonima: (Int, Int) -> Int = fun(a, b): Int {
+        return a + b
+    }
+    println(minhaFuncaoAnonima(20, 10))
+}
+
+fun testaFuncaoLambda() {
+    val minhaFuncaoLambda: (Int, Int) -> Int = { a, b ->
+        a + b
+    }
+    println(minhaFuncaoLambda(15, 10))
+}
+
+fun testaTipoFuncaoClasse() {
+    val minhaFuncaoClasse: (Int, Int) -> Int = Soma()
+    println(minhaFuncaoClasse(10, 10))
 }
 
 fun testaTipoFuncaoReferencia() {
-    val minhaFuncao: () -> Unit = ::teste
-    println(minhaFuncao())
+    val minhaFuncao: (Int, Int) -> Int = ::soma
+    println(minhaFuncao(5, 10))
 }
 
-fun teste() {
-    println("Executa teste")
+fun soma(a: Int, b: Int): Int {
+    return a + b
 }
 
-class Teste: () -> Unit {
-    override fun invoke() {
-        println("executa invoke do Teste")
-    }
-
+class Soma: (Int, Int) -> Int {
+    override fun invoke(p1: Int, p2: Int): Int = p1 + p2
 }
